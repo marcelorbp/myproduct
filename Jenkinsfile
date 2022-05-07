@@ -12,23 +12,23 @@ pipeline {
                  git changelog: false, poll: false, url: 'https://github.com/marcelorbp/myproduct.git'
             }
         }
-        stage('Build') {
+        stage('Compile') {
             steps {
                 sh 'mvn clean compile'
-                archiveArtifacts 'target/*.jar'
             }
         }
         stage('Test') {
             steps {
-                /* `make check` returns non-zero on test failures,
-                * using `true` to allow the Pipeline to continue nonetheless
-                */
-          //      sh 'make check || true'
-          //      junit '**/target/*.xml'
                 sh 'mvn test'
-
+                archiveArtifacts 'target/*.xml'
             }
         }
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+                archiveArtifacts 'target/*.jar'
+            }
+         }
         stage('Deploy') {
             steps {
                 echo 'Deploy somewhere!'
