@@ -25,24 +25,13 @@ pipeline {
                 */
           //      sh 'make check || true'
           //      junit '**/target/*.xml'
-                sh 'mvn clean test'
+                sh 'mvn test'
 
             }
         }
         stage('Deploy') {
-            when {
-                expression {
-                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                }
-            }
             steps {
-                sh 'make publish'
-            }
-        }
-        stage('Monitor') {
-            steps {
-                //
-               echo 'Monitor...'
+                sh 'mvn deploy'
             }
         }
     }
