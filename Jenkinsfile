@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+              //  archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
         stage('Test') {
@@ -23,8 +23,10 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
-                sh 'make check || true'
-                junit '**/target/*.xml'
+          //      sh 'make check || true'
+          //      junit '**/target/*.xml'
+                sh 'mvn clean test'
+
             }
         }
         stage('Deploy') {
